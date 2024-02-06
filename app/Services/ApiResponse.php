@@ -58,6 +58,15 @@ class ApiResponse
         ], 500);
     }
 
+    public static function error_validation($validator, $message = 'Validasi Gagal!')
+    {
+        return Response::json([
+            'message' => $message,
+            'code' => 400,
+            'errors' => $validator->errors(),
+        ], 400);
+    }
+
     public static function store($data, $message = 'Success')
     {
         return static::success($data, $message, 201);

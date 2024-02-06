@@ -1,8 +1,8 @@
 <?php
 
-namespace Services\Interface;
+namespace App\Services\Interfaces;
 
-interface MastersInterface
+interface MasterInterface
 {
     public function store($models, array $data);
 

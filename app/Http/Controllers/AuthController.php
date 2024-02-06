@@ -7,15 +7,14 @@ use Illuminate\Http\Request;
 use App\Services\ApiResponse;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
-use Services\Interface\MastersInterface;
-use Illuminate\Support\Facades\Validator;
+use App\Services\Interfaces\MasterInterface;
 
 class AuthController extends Controller
 {
     protected $api;
     protected $model;
     protected $interface;
-    public function __construct(MastersInterface $interface,User $model, ApiResponse $api)
+    public function __construct(MasterInterface $interface, User $model, ApiResponse $api)
     {
         $this->model = $model;
         $this->api = $api;
@@ -25,13 +24,14 @@ class AuthController extends Controller
     public function register(UserRequest $request)
     {
         DB::beginTransaction();
-        try {
-            $city = $this->interface->store($this->model, $request->validated());
+        try{
+            dd(1);
+            $users = $this->interface->store($this->model, $request->validated());
             DB::commit();
-
-            return $this->api->store($city);
-        } catch (\Throwable$e) {
-            DB::rollBack();
+            return $this->api->store($users);
+        }
+        catch(\Throwable$e){
+        DB::rollBack();
             if (config('envconfig.app_debug')) {
                 return $this->api->error_code($e->getMessage(), $e->getCode());
             } else {
